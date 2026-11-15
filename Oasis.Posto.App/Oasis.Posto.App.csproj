@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Aplicação Windows Forms do posto comunitário. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>Oasis.Posto.App</RootNamespace>
+    <AssemblyName>PainelDoPosto</AssemblyName>
+    <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
+    <!-- A tela não trata aviso como erro: analisadores do Windows Forms mudam entre versões do SDK. -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Oasis.Posto.Nucleo\Oasis.Posto.Nucleo.csproj" />
+  </ItemGroup>
+</Project>
