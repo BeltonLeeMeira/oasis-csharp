@@ -2,6 +2,11 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). As versões seguem o [Versionamento Semântico](https://semver.org/lang/pt-BR/): MAIOR.MENOR.CORREÇÃO.
 
+## [1.0.0] - 2026-11-15
+
+### Alterado
+- Versão estável para a entrega da Global Solution: todas as funções do painel reunidas e testadas.
+
 ## [0.4.0] - 2026-11-15
 
 ### Adicionado
