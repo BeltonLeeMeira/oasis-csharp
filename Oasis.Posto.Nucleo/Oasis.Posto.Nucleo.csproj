@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Regras, dados e cliente da API: sem nada de tela, por isso roda e é testado em qualquer sistema. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>Oasis.Posto</RootNamespace>
+  </PropertyGroup>
+</Project>
