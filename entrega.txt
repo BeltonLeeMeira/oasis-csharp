@@ -1,0 +1,7 @@
+Global Solution FIAP 2026.2 - C# Software Development
+CitizenTech: Oasis - Painel do Posto
+Turma: 3ESPA
+
+RM: RM560760
+Nome completo: Belton Lee Carr De Muzio Meira
+Repositorio: https://github.com/BeltonLeeMeira/oasis-csharp
