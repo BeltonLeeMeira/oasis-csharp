@@ -1,6 +1,8 @@
 // Testes do núcleo do Painel do Posto, sem pacotes externos.
 // Rodar: dotnet run --project Oasis.Posto.Testes
+// O último grupo conversa com a API real se ela estiver no ar (OASIS_API_URL e OASIS_CHAVE_POSTO).
 
+using Oasis.Posto.Api;
 using Oasis.Posto.Dados;
 using Oasis.Posto.Dominio;
 
@@ -13,6 +15,21 @@ void Teste(string nome, Action corpo)
     try
     {
         corpo();
+        Console.WriteLine($"  ok    {nome}");
+    }
+    catch (Exception e)
+    {
+        falhas++;
+        Console.WriteLine($"  FALHA {nome}: {e.Message}");
+    }
+}
+
+async Task TesteAsync(string nome, Func<Task> corpo)
+{
+    total++;
+    try
+    {
+        await corpo();
         Console.WriteLine($"  ok    {nome}");
     }
     catch (Exception e)
@@ -118,6 +135,40 @@ Teste("arquivo alterado é recusado", () =>
 });
 Teste("senha curta não é aceita", () => Lanca<ArgumentException>(() => SessaoDoPosto.CriarNova(Path.Combine(pasta, "x.dados"), "1234")));
 Teste("endereço da API inválido é recusado", () => Lanca<ErroDeValidacao>(() => SessaoDoPosto.Abrir(caminho, "senha-do-posto").AlterarConexao("ftp://x", "k")));
+
+Console.WriteLine("Integração com a API (pula se a API estiver fora do ar)");
+var url = Environment.GetEnvironmentVariable("OASIS_API_URL") ?? "http://localhost:8000";
+var chave = Environment.GetEnvironmentVariable("OASIS_CHAVE_POSTO") ?? "troque-esta-chave-do-posto";
+using (var api = new ClienteApiOasis(url, chave))
+{
+    if (!await api.EstaNoArAsync())
+    {
+        Console.WriteLine($"  -     API fora do ar em {url}: integração pulada");
+    }
+    else
+    {
+        await TesteAsync("lê o risco agora", async () => Confirmar((await api.RiscoAgoraAsync()).Count > 0, "nenhuma estação"));
+        await TesteAsync("lê a previsão de amanhã (ou null sem leituras)", async () =>
+        {
+            var previsao = await api.PrevisaoAmanhaAsync();
+            Confirmar(previsao is null || previsao.Probabilidade is >= 0 and <= 1, "probabilidade fora de 0..1");
+        });
+        await TesteAsync("lista os pontos pendentes com a chave do posto", async () => await api.PontosPendentesAsync());
+        await TesteAsync("chave errada vira mensagem clara", async () =>
+        {
+            using var errada = new ClienteApiOasis(url, "chute");
+            try
+            {
+                await errada.PontosPendentesAsync();
+                throw new InvalidOperationException("devia recusar");
+            }
+            catch (ErroApi erro)
+            {
+                Confirmar(erro.Message.Contains("chave do posto"), erro.Message);
+            }
+        });
+    }
+}
 
 Directory.Delete(pasta, recursive: true);
 Console.WriteLine();
