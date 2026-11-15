@@ -25,7 +25,11 @@ Nos dias de calor extremo, **idosos que moram sozinhos** correm mais risco de de
 
 ## A pessoa real beneficiada
 
-O primeiro beneficiado é o **agente do posto** que faz a busca ativa: ele abre o painel e sabe na hora quem ligar e em que ordem. O segundo é o **idoso que mora sozinho**, que recebe a ligação antes de passar mal.
+O Rafa tem 29 anos e é entregador de aplicativo na Zona Sul de São Paulo. Em dia de muito calor ele sai mais cedo, leva garrafa térmica no bagageiro e para em posto de gasolina para encher a garrafa. Uma vez teve um "branco" e tremedeira depois de três horas sem beber nada, e não contou para ninguém. Parar custa corrida, então notificação ele ignora: só pararia se soubesse de um ponto de apoio com água por perto.
+
+É aí que o painel entra para ele: os pontos de água e sombra sugeridos pelos moradores só aparecem no mapa do app depois que o agente do posto aprova, na aba **Pontos para aprovar**. A conversa completa está em [`docs/entrevista.md`](docs/entrevista.md).
+
+Dentro do posto, quem usa o painel é o **agente** que faz a busca ativa: ele abre a tela e sabe na hora para quem ligar e em que ordem. Essa ligação é voltada aos **idosos que moram sozinhos** e são acompanhados pelo posto, para que recebam o contato antes de passar mal.
 
 ## O que o painel faz
 
