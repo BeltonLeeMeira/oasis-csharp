@@ -2,6 +2,15 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). As versões seguem o [Versionamento Semântico](https://semver.org/lang/pt-BR/): MAIOR.MENOR.CORREÇÃO.
 
+## [0.4.0] - 2026-11-15
+
+### Adicionado
+- Aplicação Windows Forms: tela de senha (espera de 30 segundos depois de 5 erros) e janela principal com quatro abas.
+- Aba Hoje: lista da busca ativa (Ligar hoje, Já contatada, Opcional) e registro de ligação.
+- Aba Pessoas acompanhadas: cadastro, edição e remoção, com validação.
+- Aba Pontos para aprovar: aprova ou rejeita os pontos sugeridos pelo app.
+- Aba Configurações: endereço da API, chave do posto e teste de conexão.
+
 ## [0.3.0] - 2026-11-15
 
 ### Adicionado
