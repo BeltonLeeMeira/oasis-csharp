@@ -25,7 +25,7 @@ Nos dias de calor extremo, **idosos que moram sozinhos** correm mais risco de de
 
 ## A pessoa real beneficiada
 
-O primeiro beneficiado é o **agente do posto** que faz a busca ativa: ele abre o painel e sabe na hora quem ligar e em que ordem. O segundo é o **idoso que mora sozinho**, que recebe a ligação antes de passar mal. A conversa com uma pessoa real está registrada em [`docs/entrevista.md`](docs/entrevista.md).
+O primeiro beneficiado é o **agente do posto** que faz a busca ativa: ele abre o painel e sabe na hora quem ligar e em que ordem. O segundo é o **idoso que mora sozinho**, que recebe a ligação antes de passar mal.
 
 ## O que o painel faz
 
@@ -108,9 +108,3 @@ No primeiro uso, crie a senha do posto. Em **Configurações**, informe o endere
 ```powershell
 dotnet run --project Oasis.Posto.Testes
 ```
-
-## Entrega no Teams
-
-1. Feche o Visual Studio e apague as pastas `bin` e `obj` dos três projetos.
-2. Compacte a pasta do projeto (botão direito → Compactar para arquivo ZIP).
-3. Envie o ZIP junto com o arquivo [`entrega.txt`](entrega.txt), com RM, nome completo e link do repositório.
