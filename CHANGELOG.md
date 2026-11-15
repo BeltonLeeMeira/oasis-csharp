@@ -2,6 +2,13 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). As versões seguem o [Versionamento Semântico](https://semver.org/lang/pt-BR/): MAIOR.MENOR.CORREÇÃO.
 
+## [0.2.0] - 2026-11-15
+
+### Adicionado
+- `CofreDeArquivo`: arquivo do posto criptografado (AES-256-GCM, chave derivada da senha com PBKDF2).
+- `SessaoDoPosto`: abre, salva e altera os dados do posto, com validação do endereço da API.
+- Testes de persistência: senha errada, arquivo alterado e senha curta.
+
 ## [0.1.0] - 2026-11-15
 
 ### Adicionado
