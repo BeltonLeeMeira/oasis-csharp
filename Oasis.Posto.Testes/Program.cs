@@ -1,6 +1,7 @@
 // Testes do núcleo do Painel do Posto, sem pacotes externos.
 // Rodar: dotnet run --project Oasis.Posto.Testes
 
+using Oasis.Posto.Dados;
 using Oasis.Posto.Dominio;
 
 var falhas = 0;
@@ -86,6 +87,39 @@ Teste("atendeu hoje vira Já contatada", () =>
     Confirmar(BuscaAtiva.MontarLista([p], NivelRisco.Perigo, agora)[0].Situacao == SituacaoNaLista.JaContatada, "esperava Já contatada");
 });
 
+Console.WriteLine("Persistência criptografada");
+var pasta = Path.Combine(Path.GetTempPath(), "oasis-testes-" + Guid.NewGuid().ToString("N"));
+var caminho = Path.Combine(pasta, "posto.dados");
+Teste("salva e reabre com a mesma senha", () =>
+{
+    var sessao = SessaoDoPosto.CriarNova(caminho, "senha-do-posto");
+    var p = Pessoa("Dona Cida", 82, true, true);
+    p.RegistrarContato(ResultadoContato.Encaminhado, agora, "UBS avisada");
+    sessao.Adicionar(p);
+    sessao.AlterarConexao("http://192.168.0.10:8000/", "chave-secreta");
+    var reaberta = SessaoDoPosto.Abrir(caminho, "senha-do-posto");
+    Confirmar(reaberta.Pessoas.Count == 1 && reaberta.Pessoas[0].Apelido == "Dona Cida", "pessoa não voltou");
+    Confirmar(reaberta.Pessoas[0].Contatos.Single().Nota == "UBS avisada", "contato não voltou");
+    Confirmar(reaberta.UrlApi == "http://192.168.0.10:8000" && reaberta.ChavePosto == "chave-secreta", "configuração não voltou");
+});
+Teste("o arquivo não tem nenhum dado legível", () =>
+{
+    var texto = System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(caminho));
+    Confirmar(!texto.Contains("Dona Cida") && !texto.Contains("91234") && !texto.Contains("chave-secreta"), "dado em texto puro no arquivo");
+});
+Teste("senha errada é recusada", () => Lanca<SenhaIncorretaException>(() => SessaoDoPosto.Abrir(caminho, "senha-errada!")));
+Teste("arquivo alterado é recusado", () =>
+{
+    var bytes = File.ReadAllBytes(caminho);
+    bytes[^1] ^= 0xFF;
+    var alterado = Path.Combine(pasta, "alterado.dados");
+    File.WriteAllBytes(alterado, bytes);
+    Lanca<SenhaIncorretaException>(() => SessaoDoPosto.Abrir(alterado, "senha-do-posto"));
+});
+Teste("senha curta não é aceita", () => Lanca<ArgumentException>(() => SessaoDoPosto.CriarNova(Path.Combine(pasta, "x.dados"), "1234")));
+Teste("endereço da API inválido é recusado", () => Lanca<ErroDeValidacao>(() => SessaoDoPosto.Abrir(caminho, "senha-do-posto").AlterarConexao("ftp://x", "k")));
+
+Directory.Delete(pasta, recursive: true);
 Console.WriteLine();
 Console.WriteLine(falhas == 0 ? $"Todos os {total} testes passaram." : $"{falhas} de {total} testes falharam.");
 return falhas == 0 ? 0 : 1;
