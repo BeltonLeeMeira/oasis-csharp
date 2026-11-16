@@ -7,20 +7,25 @@ public sealed record ItemBuscaAtiva(PessoaAcompanhada Pessoa, int Pontuacao, Sit
 /// Regras da busca ativa: em dia de calor, o posto liga primeiro para quem corre mais risco.
 /// Pontuação (0 a 7): +2 mora sozinha, +2 condição de atenção, +2 com 80 anos ou mais
 /// (+1 de 65 a 79), +1 sem contato com sucesso nas últimas 24 horas.
+/// Cada parcela é um <see cref="CriterioDePontuacao"/>; a pontuação é a soma de todos.
 /// Contato obrigatório do dia: Perigo, todos; Alerta, pontuação 3 ou mais; Atenção, 5 ou mais; Normal, ninguém.
 /// </summary>
 public static class BuscaAtiva
 {
-    public static int Pontuar(PessoaAcompanhada pessoa, DateTime agora)
-    {
-        var pontos = 0;
-        if (pessoa.MoraSozinha) pontos += 2;
-        if (pessoa.CondicaoDeAtencao) pontos += 2;
-        if (pessoa.Idade >= 80) pontos += 2;
-        else if (pessoa.Idade >= 65) pontos += 1;
-        if (pessoa.UltimoContatoComSucesso is not { } ultimo || agora - ultimo > TimeSpan.FromHours(24)) pontos += 1;
-        return pontos;
-    }
+    /// <summary>Os critérios que formam a pontuação. A lista é da classe base; cada item calcula do seu jeito.</summary>
+    public static IReadOnlyList<CriterioDePontuacao> Criterios { get; } =
+    [
+        new CriterioMoraSozinha(),
+        new CriterioCondicaoDeAtencao(),
+        new CriterioIdade(),
+        new CriterioSemContatoRecente(),
+    ];
+
+    /// <summary>Maior pontuação possível: a soma do máximo de cada critério.</summary>
+    public static int PontuacaoMaxima => Criterios.Sum(c => c.PontosMaximos);
+
+    public static int Pontuar(PessoaAcompanhada pessoa, DateTime agora) =>
+        Criterios.Sum(criterio => criterio.Pontuar(pessoa, agora));
 
     public static int PontuacaoMinima(NivelRisco nivel) => nivel switch
     {

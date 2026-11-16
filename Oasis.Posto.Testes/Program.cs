@@ -72,6 +72,16 @@ Teste("Criar com dado inválido lança ErroDeValidacao", () => Lanca<ErroDeValid
 
 Console.WriteLine("Pontuação e lista do dia");
 Teste("pontuação máxima é 7", () => Confirmar(BuscaAtiva.Pontuar(Pessoa("Seu Zé", 85, true, true), agora) == 7, "esperava 7"));
+Teste("a pontuação máxima é a soma dos critérios", () => Confirmar(BuscaAtiva.PontuacaoMaxima == 7, $"esperava 7, veio {BuscaAtiva.PontuacaoMaxima}"));
+Teste("cada critério pontua do seu jeito (polimorfismo)", () =>
+{
+    var seuZe = Pessoa("Seu Zé", 85, true, false);
+    CriterioDePontuacao[] criterios = [new CriterioMoraSozinha(), new CriterioCondicaoDeAtencao(), new CriterioIdade(), new CriterioSemContatoRecente()];
+    var pontos = criterios.Select(c => c.Pontuar(seuZe, agora)).ToArray();
+    Confirmar(pontos.SequenceEqual(new[] { 2, 0, 2, 1 }), "esperava 2, 0, 2, 1 e veio " + string.Join(", ", pontos));
+    Confirmar(criterios.Count(c => c.SeAplica(seuZe, agora)) == 3, "esperava 3 critérios aplicados");
+    Confirmar(new CriterioIdade().Pontuar(Pessoa("Dona Ana", 70, false, false), agora) == 1, "70 anos soma 1");
+});
 Teste("65 a 79 anos soma 1", () => Confirmar(BuscaAtiva.Pontuar(Pessoa("Dona Ana", 70, false, false), agora) == 2, "esperava 2 (idade + sem contato)"));
 Teste("contato nas últimas 24 h tira 1 ponto", () =>
 {
