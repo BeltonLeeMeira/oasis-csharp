@@ -84,6 +84,7 @@ oasis-csharp/
 ├── Oasis.Posto.sln
 ├── Directory.Build.props        versão (1.0.0) e opções comuns
 ├── CHANGELOG.md                 histórico de versões (SemVer)
+├── evidencias/                  telas do painel em funcionamento
 ├── VERSIONAMENTO.md             como as versões e os pull requests foram organizados
 ├── Oasis.Posto.Nucleo/          regras, dados e API (sem tela)
 │   ├── Dominio/                 PessoaAcompanhada, BuscaAtiva, ValidadorPessoa, enums
@@ -112,3 +113,39 @@ No primeiro uso, crie a senha do posto. Em **Configurações**, informe o endere
 ```powershell
 dotnet run --project Oasis.Posto.Testes
 ```
+
+## Evidências de funcionamento
+
+Telas do painel rodando no Windows, com pessoas fictícias.
+
+**Primeiro uso.** O painel pede a criação da senha do posto, que protege o arquivo de dados.
+
+![Tela de criação da senha](evidencias/01-primeiro-uso-senha.png)
+
+**Pessoas acompanhadas.** Cadastro dos idosos que o posto acompanha.
+
+![Aba Pessoas acompanhadas com três cadastros](evidencias/02-pessoas-acompanhadas.png)
+
+**Validação do cadastro.** Apelido em branco e telefone inválido são recusados, e o cadastro não é salvo.
+
+![Cadastro com erros de validação](evidencias/03-validacao-do-cadastro.png)
+
+**Lista do dia.** No nível Perigo, todas entram em "Ligar hoje", da maior pontuação para a menor, com o motivo de cada ponto.
+
+![Aba Hoje no nível Perigo](evidencias/04-hoje-nivel-perigo.png)
+
+**Registro de ligação.** O agente escolhe o resultado e pode anotar uma observação.
+
+![Tela de registro de ligação](evidencias/05-registrar-ligacao.png)
+
+**Depois da ligação.** A pessoa passa para "Já contatada", vai para o fim da lista e perde o ponto de "nunca contatada".
+
+![Aba Hoje com uma pessoa já contatada](evidencias/06-hoje-ja-contatada.png)
+
+**Pontos para aprovar.** Fila dos pontos de água e sombra sugeridos pelo app. A lista vem da API Oásis; na imagem ela está vazia porque a API estava desligada.
+
+![Aba Pontos para aprovar](evidencias/07-pontos-para-aprovar.png)
+
+**Configurações.** Endereço da API e chave do posto, guardados no arquivo criptografado.
+
+![Aba Configurações](evidencias/08-configuracoes.png)
