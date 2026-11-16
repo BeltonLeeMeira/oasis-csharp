@@ -15,6 +15,7 @@ Cada parte nasce numa branch, entra na `main` por **pull request** e recebe uma 
 | v0.3.0 | `feature/integracao-api` | Cliente da API Oásis | `ClienteApiOasis` e testes de integração |
 | v0.4.0 | `feature/telas-windows-forms` | Telas em Windows Forms | Tela de senha e as quatro abas |
 | v1.0.0 | `release/1.0.0` | Versão de entrega | Versão 1.0.0 |
+| v1.1.0 | `feature/criterios-de-pontuacao` | Critérios de pontuação com herança e polimorfismo | `CriterioDePontuacao` e subclasses |
 
 Cada branch parte da anterior, então os pull requests são mesclados **nessa ordem**, com o botão padrão **Merge pull request** (merge commit). A cada push e pull request, o GitHub Actions compila a solução e roda os testes do núcleo (aba **Actions**).
 

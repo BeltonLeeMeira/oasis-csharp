@@ -64,7 +64,8 @@ Os dados das pessoas acompanhadas são dados de saúde, sensíveis pela LGPD. Po
 | `PessoaAcompanhada` | Entidade com estado encapsulado: propriedades só de leitura, mudanças por `Atualizar()` e `RegistrarContato()`, contatos expostos como `IReadOnlyList` |
 | `RegistroContato` | Registro imutável (`record`) de uma ligação |
 | `ValidadorPessoa` | Regras de preenchimento, com mensagens por campo |
-| `BuscaAtiva` | Pontuação, nível do dia e montagem da lista |
+| `CriterioDePontuacao` | **Herança e polimorfismo.** Classe base abstrata de cada parcela da pontuação. `CriterioSimOuNao` herda dela e serve de base para `CriterioMoraSozinha`, `CriterioCondicaoDeAtencao` e `CriterioSemContatoRecente`; `CriterioIdade` herda direto, porque tem duas faixas. Cada subclasse sobrescreve o cálculo |
+| `BuscaAtiva` | Soma os critérios sem saber qual é qual, define o nível do dia e monta a lista |
 | `CofreDeArquivo` | Criptografia do arquivo (AES-GCM + PBKDF2) |
 | `SessaoDoPosto` | Persistência: abre, guarda e salva tudo o que o posto tem |
 | `ClienteApiOasis` | Conversa com a API (risco, previsão, pontos) |
@@ -87,11 +88,11 @@ oasis-csharp/
 ├── evidencias/                  telas do painel em funcionamento
 ├── VERSIONAMENTO.md             como as versões e os pull requests foram organizados
 ├── Oasis.Posto.Nucleo/          regras, dados e API (sem tela)
-│   ├── Dominio/                 PessoaAcompanhada, BuscaAtiva, ValidadorPessoa, enums
+│   ├── Dominio/                 PessoaAcompanhada, CriterioDePontuacao, BuscaAtiva, ValidadorPessoa
 │   ├── Dados/                   CofreDeArquivo, SessaoDoPosto
 │   └── Api/                     ClienteApiOasis
 ├── Oasis.Posto.App/             Windows Forms (as telas)
-└── Oasis.Posto.Testes/          22 testes do núcleo
+└── Oasis.Posto.Testes/          24 testes do núcleo
 ```
 
 ## Como executar
@@ -104,6 +105,12 @@ Pré-requisitos: Windows 10 ou 11, **SDK do .NET 8 ou mais novo** (o Visual Stud
 
 ```powershell
 dotnet run --project Oasis.Posto.App
+```
+
+O projeto é .NET 8. Em um computador que só tem o .NET 10 instalado, rode antes, no mesmo terminal:
+
+```powershell
+$env:DOTNET_ROLL_FORWARD = "Major"
 ```
 
 No primeiro uso, crie a senha do posto. Em **Configurações**, informe o endereço da API (ex.: `http://localhost:8000`) e a chave do posto (a mesma de `OASIS_CHAVE_POSTO` na API), clique em **Testar conexão** e depois em **Salvar**. Cadastre algumas pessoas fictícias e veja a lista da aba **Hoje** mudar conforme o nível de calor.

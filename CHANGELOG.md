@@ -2,6 +2,14 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). As versões seguem o [Versionamento Semântico](https://semver.org/lang/pt-BR/): MAIOR.MENOR.CORREÇÃO.
 
+## [1.1.0] - 2026-11-15
+
+### Alterado
+- A pontuação da busca ativa passou a ser calculada por critérios: a classe base `CriterioDePontuacao`, a intermediária `CriterioSimOuNao` e quatro critérios concretos (mora sozinha, condição de atenção, idade e sem contato recente). O resultado para o usuário é o mesmo.
+
+### Adicionado
+- Testes dos critérios e da pontuação máxima.
+
 ## [1.0.0] - 2026-11-15
 
 ### Alterado
